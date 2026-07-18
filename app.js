@@ -345,7 +345,7 @@
     canvas.height = innerHeight * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const colors = ['#8b7bff', '#4ed6ff', '#ff7bd5', '#4ade80', '#ffd166'];
+    const colors = ['#faac0f', '#2ebd73', '#ff6a2b', '#ffd166', '#e6e1d7'];
     const parts = Array.from({ length: 160 }, () => ({
       x: innerWidth / 2 + (Math.random() - 0.5) * 220,
       y: innerHeight * 0.4,
