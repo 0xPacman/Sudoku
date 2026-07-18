@@ -153,9 +153,9 @@
       const d = Math.hypot(r - 4, c - 4);
       el.style.animationDelay = `${d * 55}ms`;
     });
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      cells.forEach((el) => el.classList.add('dealt'));
-    }));
+    // synchronous reflow restarts the animation — rAF would never fire in a background tab
+    void board.offsetWidth;
+    cells.forEach((el) => el.classList.add('dealt'));
   }
 
   function select(r, c) {
@@ -249,8 +249,9 @@
   }
 
   function undo() {
+    if (state.paused || state.won) return;
     const h = state.history.pop();
-    if (!h || state.paused || state.won) return;
+    if (!h) return;
     state.grid[h.r][h.c] = h.v;
     state.notes[h.r][h.c] = h.notes;
     state.selected = [h.r, h.c];
