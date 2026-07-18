@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Sudoku — Aurora</title>
+  <meta name="description" content="A beautifully animated Sudoku. Aurora glass design, fluid motion, pure vanilla JS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔢</text></svg>" />
+</head>
+<body>
+  <div class="aurora"><div class="orb"></div></div>
+  <div class="grain"></div>
+
+  <div class="app">
+    <header class="top">
+      <div class="logo">SUDO<span>KU</span></div>
+      <div class="top-actions">
+        <button class="icon-btn" id="btn-theme" title="Toggle theme" aria-label="Toggle theme">◐</button>
+        <button class="icon-btn" id="btn-pause" title="Pause" aria-label="Pause">⏸</button>
+        <button class="icon-btn" id="btn-new" title="New game" aria-label="New game">✦</button>
+      </div>
+    </header>
+
+    <div class="hud">
+      <div class="stat"><span class="label">Difficulty</span><span class="value diff" id="difficulty">—</span></div>
+      <div class="stat"><span class="label">Time</span><span class="value" id="timer">0:00</span></div>
+      <div class="stat"><span class="label">Mistakes</span><span class="value" id="mistakes">0</span></div>
+      <div class="stat"><span class="label">Hints</span><span class="value" id="hints-left">3</span></div>
+    </div>
+
+    <div class="board-wrap">
+      <div class="board" id="board" role="grid" aria-label="Sudoku board"></div>
+    </div>
+
+    <div class="pad" id="pad"></div>
+
+    <div class="toolbar">
+      <button class="tool" id="btn-undo"><span class="ico">↩</span>Undo</button>
+      <button class="tool" id="btn-erase"><span class="ico">⌫</span>Erase</button>
+      <button class="tool" id="btn-notes"><span class="ico">✎</span>Notes<span class="badge" id="notes-badge" hidden>ON</span></button>
+      <button class="tool" id="btn-hint"><span class="ico">💡</span>Hint</button>
+    </div>
+  </div>
+
+  <!-- New game -->
+  <div class="overlay" id="ov-new">
+    <div class="modal">
+      <h1>New Game</h1>
+      <p>Pick your poison</p>
+      <div class="diff-grid">
+        <button class="diff-btn" data-diff="easy">Easy <span class="dots"><b>●</b>○○○</span></button>
+        <button class="diff-btn" data-diff="medium">Medium <span class="dots"><b>●●</b>○○</span></button>
+        <button class="diff-btn" data-diff="hard">Hard <span class="dots"><b>●●●</b>○</span></button>
+        <button class="diff-btn" data-diff="expert">Expert <span class="dots"><b>●●●●</b></span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pause -->
+  <div class="overlay" id="ov-pause">
+    <div class="modal">
+      <span class="pause-glyph">⏸</span>
+      <h1>Paused</h1>
+      <p>The grid will wait for you.</p>
+      <button class="cta" id="btn-resume">Resume</button>
+    </div>
+  </div>
+
+  <!-- Win -->
+  <div class="overlay" id="ov-win">
+    <div class="modal">
+      <h1>Solved! ✦</h1>
+      <p id="win-quip">Beautiful work.</p>
+      <div class="win-stats">
+        <div><span class="label">Time</span><span class="value" id="win-time">—</span></div>
+        <div><span class="label">Mistakes</span><span class="value" id="win-mistakes">—</span></div>
+        <div><span class="label">Hints</span><span class="value" id="win-hints">—</span></div>
+      </div>
+      <button class="cta" id="btn-again">Play Again</button>
+    </div>
+  </div>
+
+  <canvas id="fx"></canvas>
+
+  <script src="sudoku.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
