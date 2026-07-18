@@ -18,7 +18,7 @@
   --bad: #dc2828;
   --cell-highlight: rgba(250, 172, 15, 0.09);
   --cell-same: rgba(46, 189, 115, 0.16);
-  --radius: 20px;
+  --radius: 2px;
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -45,7 +45,7 @@
 html, body { height: 100%; }
 
 body {
-  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
@@ -60,9 +60,9 @@ body {
   z-index: -2;
   overflow: hidden;
   filter: blur(90px) saturate(1.3);
-  opacity: 0.55;
+  opacity: 0.28;
 }
-[data-theme='light'] .aurora { opacity: 0.35; }
+[data-theme='light'] .aurora { opacity: 0.2; }
 
 .aurora::before,
 .aurora::after,
@@ -93,6 +93,24 @@ body {
 @keyframes drift-b { to { transform: translate(-12vmax, -12vmax) scale(0.9); } }
 @keyframes drift-c { to { transform: translate(-16vmax, 8vmax) scale(1.25); } }
 
+/* CRT scanlines + dot grid, straight from the portfolio */
+.scanlines {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(230, 225, 215, 0.04) 3px, transparent 4px
+  );
+}
+[data-theme='light'] .scanlines { background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(43, 36, 28, 0.04) 3px, transparent 4px); }
+
+.dotgrid {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: radial-gradient(circle, var(--accent) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.06;
+}
+
 /* Fine grain to avoid banding */
 .grain {
   position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5;
@@ -117,22 +135,26 @@ header.top {
 }
 
 .logo {
-  font-weight: 800;
-  font-size: 1.35rem;
+  font-weight: 700;
+  font-size: 1.15rem;
   letter-spacing: 0.02em;
-  background: linear-gradient(100deg, var(--accent), var(--accent-2) 55%, var(--accent-3));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
-.logo span { font-weight: 300; }
+.logo .prompt { color: var(--text-dim); font-weight: 400; }
+.logo .sudo { color: var(--accent); }
+.logo .ku { color: var(--accent-2); }
+.logo .caret {
+  color: var(--accent);
+  font-weight: 400;
+  animation: blink 1.1s step-end infinite;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
 .top-actions { display: flex; gap: 8px; }
 
 .icon-btn {
   width: 40px; height: 40px;
   display: grid; place-items: center;
-  border-radius: 12px;
+  border-radius: var(--radius);
   border: 1px solid var(--stroke);
   background: var(--surface);
   color: var(--text);
@@ -171,26 +193,38 @@ header.top {
 }
 
 .board {
-  --gap: clamp(2px, 0.6vw, 3px);
   position: relative;
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: var(--gap);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
   aspect-ratio: 1;
   padding: clamp(8px, 1.6vw, 12px);
-  border-radius: calc(var(--radius) + 6px);
-  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  border: 1px solid var(--stroke-strong);
   background: var(--surface);
   backdrop-filter: blur(20px);
   box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* each 3x3 box is its own grid — separator thickness comes from the two
+   gap levels, so nothing overflows the board's padding */
+.box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1px;
+  min-width: 0;
+  min-height: 0;
 }
 
 .cell {
   position: relative;
   display: grid;
   place-items: center;
-  aspect-ratio: 1;
-  border-radius: clamp(6px, 1.4vw, 10px);
+  min-width: 0;
+  min-height: 0;
+  border-radius: var(--radius);
   background: rgba(255, 235, 200, 0.035);
   border: 1px solid transparent;
   font-size: clamp(1rem, 4.2vmin, 1.7rem);
@@ -209,10 +243,6 @@ header.top {
   from { opacity: 0; transform: scale(0.4) rotate(-6deg); }
   to { opacity: 1; transform: scale(1) rotate(0deg); }
 }
-
-/* thicker 3x3 separations via margins */
-.cell[data-c='3'], .cell[data-c='6'] { margin-left: calc(var(--gap) * 2.4); }
-.cell[data-r='3'], .cell[data-r='6'] { margin-top: calc(var(--gap) * 2.4); }
 
 .cell.given { font-weight: 700; }
 /* user-entered digits read as "live" — phosphor green, both themes */
@@ -281,7 +311,7 @@ header.top {
 .key {
   position: relative;
   aspect-ratio: 0.86;
-  border-radius: 14px;
+  border-radius: var(--radius);
   border: 1px solid var(--stroke);
   background: var(--surface);
   backdrop-filter: blur(14px);
@@ -308,7 +338,7 @@ header.top {
 .tool {
   display: flex; flex-direction: column; align-items: center; gap: 4px;
   padding: 10px 6px;
-  border-radius: 14px;
+  border-radius: var(--radius);
   border: 1px solid var(--stroke);
   background: var(--surface);
   backdrop-filter: blur(14px);
@@ -332,7 +362,7 @@ header.top {
   font-size: 0.55rem;
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
   color: #fff;
-  border-radius: 99px;
+  border-radius: var(--radius);
   padding: 1px 6px;
 }
 .tool { position: relative; }
@@ -344,16 +374,19 @@ header.top {
   background: rgba(5, 5, 5, 0.55);
   backdrop-filter: blur(18px);
   opacity: 0;
+  /* visibility (not just opacity) — backdrop-filter descendants can still
+     paint inside an opacity-0 ancestor in Chromium */
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
 }
 [data-theme='light'] .overlay { background: rgba(246, 242, 233, 0.5); }
-.overlay.show { opacity: 1; pointer-events: auto; }
+.overlay.show { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity 0.4s ease; }
 
 .modal {
   width: min(400px, calc(100vw - 40px));
   padding: 30px 26px;
-  border-radius: 24px;
+  border-radius: var(--radius);
   border: 1px solid var(--stroke-strong);
   background: var(--surface-strong);
   backdrop-filter: blur(30px);
@@ -376,7 +409,7 @@ header.top {
 .diff-grid { display: grid; gap: 10px; }
 .diff-btn {
   padding: 13px 16px;
-  border-radius: 14px;
+  border-radius: var(--radius);
   border: 1px solid var(--stroke);
   background: var(--surface);
   color: var(--text);
@@ -401,7 +434,7 @@ header.top {
 
 .cta {
   padding: 13px 30px;
-  border-radius: 99px;
+  border-radius: var(--radius);
   border: none;
   background: linear-gradient(100deg, var(--accent), var(--accent-2));
   color: #fff;

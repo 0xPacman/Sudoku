@@ -3,21 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Sudoku — Aurora</title>
-  <meta name="description" content="A beautifully animated Sudoku. Aurora glass design, fluid motion, pure vanilla JS." />
+  <title>sudo ku</title>
+  <meta name="description" content="sudo ku — a terminal-styled animated Sudoku. Phosphor amber on black, fluid motion, pure vanilla JS." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔢</text></svg>" />
 </head>
 <body>
   <div class="aurora"><div class="orb"></div></div>
+  <div class="dotgrid"></div>
   <div class="grain"></div>
+  <div class="scanlines"></div>
 
   <div class="app">
     <header class="top">
-      <div class="logo">SUDO<span>KU</span></div>
+      <div class="logo"><span class="prompt">$ </span><span class="sudo">sudo</span> <span class="ku">ku</span><span class="caret">_</span></div>
       <div class="top-actions">
         <button class="icon-btn" id="btn-theme" title="Toggle theme" aria-label="Toggle theme">◐</button>
         <button class="icon-btn" id="btn-pause" title="Pause" aria-label="Pause">⏸</button>
@@ -49,8 +51,8 @@
   <!-- New game -->
   <div class="overlay" id="ov-new">
     <div class="modal">
-      <h1>New Game</h1>
-      <p>Pick your poison</p>
+      <h1>$ sudo ku --new</h1>
+      <p>[sudo] select difficulty:</p>
       <div class="diff-grid">
         <button class="diff-btn" data-diff="easy">Easy <span class="dots"><b>●</b>○○○</span></button>
         <button class="diff-btn" data-diff="medium">Medium <span class="dots"><b>●●</b>○○</span></button>
@@ -64,23 +66,23 @@
   <div class="overlay" id="ov-pause">
     <div class="modal">
       <span class="pause-glyph">⏸</span>
-      <h1>Paused</h1>
-      <p>The grid will wait for you.</p>
-      <button class="cta" id="btn-resume">Resume</button>
+      <h1>SIGSTOP</h1>
+      <p>process suspended — the grid will wait.</p>
+      <button class="cta" id="btn-resume">$ fg — resume</button>
     </div>
   </div>
 
   <!-- Win -->
   <div class="overlay" id="ov-win">
     <div class="modal">
-      <h1>Solved! ✦</h1>
+      <h1>exit 0 ✦</h1>
       <p id="win-quip">Beautiful work.</p>
       <div class="win-stats">
         <div><span class="label">Time</span><span class="value" id="win-time">—</span></div>
         <div><span class="label">Mistakes</span><span class="value" id="win-mistakes">—</span></div>
         <div><span class="label">Hints</span><span class="value" id="win-hints">—</span></div>
       </div>
-      <button class="cta" id="btn-again">Play Again</button>
+      <button class="cta" id="btn-again">$ replay</button>
     </div>
   </div>
 

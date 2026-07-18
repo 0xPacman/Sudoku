@@ -31,6 +31,12 @@
   function buildBoard() {
     board.innerHTML = '';
     cells = [];
+    const boxes = Array.from({ length: 9 }, () => {
+      const b = document.createElement('div');
+      b.className = 'box';
+      board.appendChild(b);
+      return b;
+    });
     for (let r = 0; r < 9; r++) {
       for (let c = 0; c < 9; c++) {
         const el = document.createElement('div');
@@ -39,7 +45,7 @@
         el.dataset.c = c;
         el.setAttribute('role', 'gridcell');
         el.addEventListener('pointerdown', () => select(r, c));
-        board.appendChild(el);
+        boxes[Math.floor(r / 3) * 3 + Math.floor(c / 3)].appendChild(el);
         cells.push(el);
       }
     }
@@ -322,10 +328,10 @@
     });
     setTimeout(() => {
       const quips = {
-        easy: 'A gentle warm-up, elegantly done.',
-        medium: 'Sharp mind, steady hand.',
-        hard: 'That grid never stood a chance.',
-        expert: 'Absolute mastery. Take a bow.',
+        easy: 'warm-up complete. no warnings.',
+        medium: 'clean solve — zero segfaults.',
+        hard: 'root access earned.',
+        expert: 'you are now in the sudoers file.',
       };
       $('#win-quip').textContent = quips[state.difficulty] || 'Beautiful work.';
       $('#win-time').textContent = fmtTime(state.seconds);

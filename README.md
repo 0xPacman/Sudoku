@@ -1,8 +1,8 @@
-# Sudoku — Aurora
+# sudo ku
 
-A beautifully animated Sudoku in pure vanilla JS. Zero build, zero dependencies — just open `index.html`.
+`$ sudo ku_` — a terminal-styled, beautifully animated Sudoku in pure vanilla JS. Zero build, zero dependencies — just open `index.html`.
 
-**Design:** aurora-glass — drifting gradient orbs behind frosted-glass panels, spring-eased motion everywhere.
+**Design:** frontier terminal — phosphor amber on true black (light mode: paper terminal), JetBrains Mono, CRT scanlines + dot grid, subtle warm aurora, spring-eased motion everywhere. Palette shared with [0xpacman.com](https://0xpacman.com).
 
 ## Features
 
